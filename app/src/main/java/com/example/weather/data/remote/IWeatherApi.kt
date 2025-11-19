@@ -1,6 +1,6 @@
 package com.example.weather.data.remote
 
-import com.example.weather.data.remote.dto.ForecastResponseDto
+import com.example.weather.data.dto.ForecastResponseDto
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 

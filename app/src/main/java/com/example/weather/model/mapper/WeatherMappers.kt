@@ -1,7 +1,7 @@
 package com.example.weather.model.mapper
 
-import com.example.weather.data.remote.dto.ParameterDto
-import com.example.weather.data.remote.dto.TimeSeriesDto
+import com.example.weather.data.dto.ParameterDto
+import com.example.weather.data.dto.TimeSeriesDto
 import com.example.weather.model.Weather
 import com.example.weather.model.WeatherSummary
 import kotlin.String
