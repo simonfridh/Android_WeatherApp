@@ -1,29 +1,42 @@
 package com.example.weather.ui.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +57,10 @@ fun HomeScreen(
         "Torsdag: Slask",
         "Fredag: SOL!",
         "Lördag: Slask :(",
-        "Söndag: varmt"
+        "Söndag: varmt",
+        "Måndag: kallt",
+        "Tisdag: kallare",
+        "Onsdag: kalle anka"
     )
 
     //PORTRAIT MODE
@@ -52,26 +68,14 @@ fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            //Top section
-            Box(
-                modifier = Modifier
-                    .weight(0.35f)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+            WeatherForecastList(
+                modifier = Modifier.weight(1f),
+                weatherForecasts = testWeatherForecasts
             ) {
-                CurrentWeatherBox()
+                CurrentWeatherBox() {}
             }
-
-            //Bottom section
-            Column(
-                modifier = Modifier
-                    .weight(0.65f)
-                    .fillMaxSize(),
-            ) {
-                WeatherForecastList(testWeatherForecasts)
-            }
+            LongitudeLatitudeBar()
         }
-
     }
 
     //LANDSCAPE MODE
@@ -79,52 +83,65 @@ fun HomeScreen(
         Row(
             modifier = Modifier.fillMaxSize()
         ) {
-            //Right side
-            Box(
+            //LEFT SIDE
+            Column(
                 modifier = Modifier
-                    .weight(0.4f)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                .weight(0.4f)
+                .fillMaxSize()
             ) {
-                CurrentWeatherBox()
+                CurrentWeatherBox(modifier = Modifier.weight(1f)) {}
+                LongitudeLatitudeBar()
             }
 
-            //Left side
+            //RIGHT SIDE
             Column(
                 modifier = Modifier
                     .weight(0.6f)
                     .fillMaxSize()
             ) {
-                WeatherForecastList(testWeatherForecasts)
+                WeatherForecastList(weatherForecasts = testWeatherForecasts) {}
             }
-
         }
     }
 }
 
 @Composable
 fun CurrentWeatherBox(
-
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ){
     //TODO inte klar
-    Icon(
-        painter = painterResource(id = R.drawable.snow),
-        contentDescription = "WeatherIcon",
-        modifier = Modifier
-            .fillMaxSize()
-            .aspectRatio(3f / 2f),
-        tint = Color.Unspecified
-    )
-}
+    Box(
+        modifier = modifier
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        //background image/icon
+        Icon(
+            painter = painterResource(id = R.drawable.snow),
+            contentDescription = "WeatherIcon",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(3f / 2f),
+            tint = Color.Unspecified
+        )
 
+        content()
+    }
+}
 
 @Composable
 fun WeatherForecastList(
     //TODO: Skicka någon form av lista hit
-    weatherForecasts: List<String>
+    modifier: Modifier = Modifier,
+    weatherForecasts: List<String>,
+    content: @Composable () -> Unit
 ) {
-    LazyColumn {
-        //TODO Lägg till någon grupperad vy här sen. Kanske en till card med olika tider
+    LazyColumn (modifier = modifier) {
+        //Nested content gets placed at the start of the list
+        item {
+            content()
+        }
 
         //Simple List
         items(weatherForecasts){ forecast ->
@@ -161,6 +178,63 @@ fun WeatherForecastList(
             }
         }
     }
+}
+
+@Composable
+fun LongitudeLatitudeBar(
+    modifier: Modifier = Modifier
+) {
+    var longitude by remember { mutableStateOf("") }
+    var latitude by remember { mutableStateOf("") }
+
+    Row(
+        modifier = modifier
+            .height(72.dp)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        TextField(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize()
+                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+            shape = RoundedCornerShape(8.dp),
+            value = longitude,
+            onValueChange = {longitude = it},
+            singleLine = true,
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp
+            )
+        )
+        TextField(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize()
+                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+            shape = RoundedCornerShape(8.dp),
+            value = latitude,
+            onValueChange = {latitude = it},
+            singleLine = true,
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp
+            )
+        )
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(8.dp),
+            shape = RoundedCornerShape(8.dp),
+            onClick = { /* TODO: Add button function */ }
+        ) {
+            Text("Button")
+        }
+    }
+
 }
 
 
