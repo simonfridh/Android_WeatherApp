@@ -1,27 +1,31 @@
 package com.example.weather
 
-import com.example.weather.data.remote.RetrofitInstance
-import com.example.weather.data.remote.WeatherRemoteDataSource
+import com.example.weather.data.remote.WeatherRemote
+import com.example.weather.model.WeatherService
 import kotlinx.coroutines.runBlocking
-import kotlin.test.DefaultAsserter.assertNotNull
-import kotlin.test.DefaultAsserter.assertTrue
 import kotlin.test.Test
 
 
 class WeatherApiTest {
 
     @Test
-    fun testWeatherApiCall_returnsData() = runBlocking {
-        val remote = WeatherRemoteDataSource(RetrofitInstance.api)
+    fun testApiCall() = runBlocking {
+        val forecast = WeatherService.getRemoteForecast(14.333f,60.383f)
+        println("Forecast:\n----------")
+        println("Longitude: " + forecast.longitude + ", Latitude: " + forecast.latitude)
 
-        // Call the API
-        val weatherList = remote.getWeather(14.333f, 60.383f)
+        println("\nCurrent Weather\n----------")
 
-        weatherList.forEach { println(it) }
+        println(forecast.currentWeather)
 
-        assertNotNull("List should contain entries", weatherList)
+        println("\nHourly Weather (Next 24h)\n----------")
+        for (weather in forecast.hourlyWeather) {
+            println(weather)
+        }
 
-        println("First weather entry ${weatherList.first()}")
-        println("Test passed: received ${weatherList.size} weather entries")
+        println("\nDaily Weather\n----------")
+        for (weather in forecast.dailyWeather) {
+            println(weather)
+        }
     }
 }

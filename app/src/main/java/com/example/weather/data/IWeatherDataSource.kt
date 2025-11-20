@@ -1,7 +1,8 @@
 package com.example.weather.data
 
-import com.example.weather.model.Weather
+import com.example.weather.model.Forecast
 
+//TODO används inte för tillfället. Ta bort om inte används
 interface IWeatherDataSource {
-    suspend fun getWeather(lon: Float, lat: Float): List<Weather>
+    suspend fun getForecast(lon: Float, lat: Float): Forecast
 }
