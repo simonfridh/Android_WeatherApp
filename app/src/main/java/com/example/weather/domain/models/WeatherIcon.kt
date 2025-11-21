@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import com.example.weather.R
 
 sealed class WeatherIcon(
-    @DrawableRes icon: Int
+    @field:DrawableRes val icon: Int
 ) {
     object Sun: WeatherIcon(
         icon = R.drawable.sun
@@ -58,7 +58,7 @@ sealed class WeatherIcon(
                 71,73,75,77,85,86 -> Snow
                 95,96,99 -> RainThunder
 
-                else -> Rainbow //Should hopefully not show up
+                else -> Rainbow
             }
         }
     }
