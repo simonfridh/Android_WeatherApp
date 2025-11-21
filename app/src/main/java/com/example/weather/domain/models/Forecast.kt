@@ -1,0 +1,10 @@
+package com.example.weather.domain.models
+
+data class Forecast (
+    val longitude: Float,
+    val latitude: Float,
+
+    val currentWeather: Weather.Current,
+    val hourlyWeather: List<Weather.Hourly>,
+    val dailyWeather: List<Weather.Daily>
+)
