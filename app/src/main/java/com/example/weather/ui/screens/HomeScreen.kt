@@ -61,7 +61,8 @@ fun HomeScreen(
     //PORTRAIT MODE
     if(orientation == Configuration.ORIENTATION_PORTRAIT) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             WeatherList(
                 modifier = Modifier.weight(1f),
@@ -83,10 +84,19 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .weight(0.4f)
-                    .fillMaxSize()
+                    .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Top
             ) {
                 CurrentWeatherBox(weatherState)
-                LongitudeLatitudeBar()
+                HourlyWeatherBox(weatherState)
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    LongitudeLatitudeBar()
+                }
             }
 
             //RIGHT SIDE
@@ -109,8 +119,8 @@ fun CurrentWeatherBox(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(2f/1f)
-            .padding(8.dp),
+            .aspectRatio(1f/0.45f)
+            .padding(8.dp,8.dp,8.dp,0.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -124,7 +134,7 @@ fun CurrentWeatherBox(
         ) {
             Text(
                 text = "Current Weather",
-                fontSize = 24.sp
+                fontSize = 20.sp
             )
             if(current != null) {
                 Row(
@@ -166,8 +176,8 @@ fun HourlyWeatherBox(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(2f/1f)
-            .padding(8.dp),
+            .aspectRatio(1/0.45f)
+            .padding(8.dp,8.dp,8.dp,0.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -181,7 +191,7 @@ fun HourlyWeatherBox(
         ) {
             Text(
                 text = "Next 24h",
-                fontSize = 24.sp
+                fontSize = 20.sp
             )
             LazyRow(
                 modifier = Modifier
@@ -224,14 +234,15 @@ fun WeatherList(
     weatherState: WeatherState,
     content: @Composable () -> Unit
 ) {
+    val dailyWeatherList = weatherState.forecast?.dailyWeather ?: emptyList()
     LazyColumn (modifier = modifier) {
         //Nested content gets placed at the start of the list
         item {
             content()
         }
 
-        val dailyWeatherList = weatherState.forecast?.dailyWeather ?: emptyList()
-        items(dailyWeatherList){ weatherItem ->
+        //Next N-days
+        item {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -241,54 +252,66 @@ fun WeatherList(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             ) {
-
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+                    Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-
-                    Icon(
-                        painter = painterResource(id = weatherItem.weatherIcon.icon),
-                        contentDescription = "WeatherIcon",
-                        modifier = Modifier
-                            .size(64.dp),
-                        tint = Color.Unspecified
+                    Text(
+                        text = "Next ${dailyWeatherList.size} days",
+                        fontSize = 20.sp
                     )
+                }
 
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Column(
-                        modifier = Modifier.weight(1f)
+                for (weatherItem in dailyWeatherList) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = weatherItem.time.dayOfWeek.toString(),
-                                fontSize = 16.sp
-                            )
-                            Text(
-                                text = weatherItem.time.toLocalDate().toString(),
-                                fontSize = 16.sp
-                            )
-                        }
+                        Icon(
+                            painter = painterResource(id = weatherItem.weatherIcon.icon),
+                            contentDescription = "WeatherIcon",
+                            modifier = Modifier
+                                .size(64.dp),
+                            tint = Color.Unspecified
+                        )
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Column(
+                            modifier = Modifier.weight(1f)
                         ) {
-                            Text(
-                                text = "min: ${weatherItem.minTemperature}°C",
-                                fontSize = 24.sp
-                            )
-                            Text(
-                                text = "max: ${weatherItem.maxTemperature}°C",
-                                fontSize = 24.sp
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = weatherItem.time.dayOfWeek.toString(),
+                                    fontSize = 16.sp
+                                )
+                                Text(
+                                    text = weatherItem.time.toLocalDate().toString(),
+                                    fontSize = 16.sp
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "min: ${weatherItem.minTemperature}°C",
+                                    fontSize = 24.sp
+                                )
+                                Text(
+                                    text = "max: ${weatherItem.maxTemperature}°C",
+                                    fontSize = 24.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -306,7 +329,7 @@ fun LongitudeLatitudeBar(
 
     Row(
         modifier = modifier
-            .height(72.dp)
+            .height(56.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondary),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -316,35 +339,33 @@ fun LongitudeLatitudeBar(
         TextField(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxSize()
-                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+                .padding(2.dp, 2.dp, 2.dp, 2.dp),
             shape = RoundedCornerShape(8.dp),
             value = longitude,
             onValueChange = {longitude = it},
             singleLine = true,
             textStyle = TextStyle(
                 textAlign = TextAlign.Center,
-                fontSize = 16.sp
+                fontSize = 20.sp
             )
         )
         TextField(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxSize()
-                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+                .padding(2.dp, 2.dp, 2.dp, 2.dp),
             shape = RoundedCornerShape(8.dp),
             value = latitude,
             onValueChange = {latitude = it},
             singleLine = true,
             textStyle = TextStyle(
                 textAlign = TextAlign.Center,
-                fontSize = 16.sp
+                fontSize = 20.sp
             )
         )
         Button(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(8.dp),
+                .padding(2.dp),
             shape = RoundedCornerShape(8.dp),
             onClick = { /* TODO: Add button function */ }
         ) {
