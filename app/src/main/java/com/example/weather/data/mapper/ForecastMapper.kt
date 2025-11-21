@@ -1,11 +1,11 @@
-package com.example.weather.data.remote.mapper
+package com.example.weather.data.mapper
 
 
 import com.example.weather.data.remote.dto.ForecastResponseDto
 import com.example.weather.data.remote.dto.Parameter
-import com.example.weather.model.Forecast
-import com.example.weather.model.Weather
-import com.example.weather.model.weathericon.WeatherIcon
+import com.example.weather.domain.models.Forecast
+import com.example.weather.domain.models.Weather
+import com.example.weather.domain.models.WeatherIcon
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.collections.iterator

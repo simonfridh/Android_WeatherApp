@@ -13,12 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.weather.ui.screens.HomeScreen
 import com.example.weather.ui.theme.WeatherTheme
+import com.example.weather.ui.viewmodel.WeatherVM
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
+                    val viewModel = hiltViewModel<WeatherVM>()
+
                     val navController = rememberNavController()
 
                     NavHost(
@@ -38,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("HomeScreen") {
                             HomeScreen(
-                       
+                                vm = viewModel
                             )
                         }
                     }

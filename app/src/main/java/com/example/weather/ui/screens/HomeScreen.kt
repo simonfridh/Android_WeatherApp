@@ -41,11 +41,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
+import com.example.weather.ui.viewmodel.FakeVM
+import com.example.weather.ui.viewmodel.IWeatherViewModel
+import com.example.weather.ui.viewmodel.WeatherVM
 
 
 @Composable
 fun HomeScreen(
-
+    vm: IWeatherViewModel
 ) {
     val orientation = LocalConfiguration.current.orientation
 
@@ -243,11 +246,11 @@ fun LongitudeLatitudeBar(
 @Preview
 @Composable
 fun HomeScreenPreviewPortrait() {
-    HomeScreen()
+    HomeScreen(FakeVM())
 }
 
 @Preview(widthDp = 915, heightDp = 412)
 @Composable
 fun LandscapePreview() {
-    HomeScreen()
+    HomeScreen(FakeVM())
 }

@@ -1,6 +1,6 @@
-package com.example.weather.model
+package com.example.weather.domain.models
 
-import com.example.weather.model.weathericon.WeatherIcon
+import com.example.weather.domain.models.WeatherIcon
 import java.time.LocalDateTime
 
 sealed class Weather{
@@ -26,6 +26,3 @@ sealed class Weather{
         val minTemperature: Float
     ) : Weather()
 }
-
-
-
