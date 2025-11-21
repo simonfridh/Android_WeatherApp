@@ -15,17 +15,22 @@ class WeatherApiTest {
         println("Longitude: " + forecast.longitude + ", Latitude: " + forecast.latitude)
 
         println("\nCurrent Weather\n----------")
+        val weather = forecast.currentWeather
+        println("Current temperature: " + weather.temperature + "°C")
 
-        println(forecast.currentWeather)
 
         println("\nHourly Weather (Next 24h)\n----------")
         for (weather in forecast.hourlyWeather) {
-            println(weather)
+            println("" + weather.time.hour + ":00" + ": " + weather.temperature + "°C")
         }
 
         println("\nDaily Weather\n----------")
         for (weather in forecast.dailyWeather) {
-            println(weather)
+            println("" + weather.time.dayOfWeek + " " +"(" + weather.time.dayOfMonth +
+                    " " + weather.time.month + " " + weather.time.year + ")" +
+                    ": max=" + weather.maxTemperature + "°C" +
+                    ", min=" + weather.minTemperature + "°C"
+            )
         }
     }
 }

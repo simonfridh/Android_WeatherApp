@@ -5,6 +5,9 @@ import com.example.weather.data.remote.dto.ForecastResponseDto
 import com.example.weather.data.remote.dto.Parameter
 import com.example.weather.model.Forecast
 import com.example.weather.model.Weather
+import com.example.weather.model.weathericon.WeatherIcon
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.collections.iterator
 
 /**
@@ -14,37 +17,37 @@ fun ForecastResponseDto.toForecast(): Forecast {
     val longitude = geometry.coordinates.firstOrNull()?.getOrNull(0)?.toFloat() ?: 0f
     val latitude = geometry.coordinates.firstOrNull()?.getOrNull(1)?.toFloat() ?: 0f
 
-    val currentTS = timeSeries.first()
+    val currentTsValues = timeSeries.first()
     val currentWeather = Weather.Current(
-        time = currentTS.validTime,
-        weatherCode = currentTS.parameters.valueOfInt("Wsymb2"),
-        temperature = currentTS.parameters.valueOfFloat("t")
+        time = LocalDateTime.parse(currentTsValues.validTime, DateTimeFormatter.ISO_DATE_TIME),
+        weatherIcon = WeatherIcon.iconFromWeatherCode(currentTsValues.parameters.valueOfInt("Wsymb2")) ,
+        temperature = currentTsValues.parameters.valueOfFloat("t")
     )
 
     //next 24 hours
-    val hourlyWeather = mutableListOf<Weather>()
-    val hourlyTS = timeSeries.take(24)
-    for (ts in hourlyTS) {
+    val hourlyWeather = mutableListOf<Weather.Hourly>()
+    val hourlyTSValues = timeSeries.take(24)
+    for (tsValues in hourlyTSValues) {
         hourlyWeather.add(
             Weather.Hourly(
-                time = ts.validTime,
-                weatherCode = ts.parameters.valueOfInt("Wsymb2"),
-                temperature = ts.parameters.valueOfFloat("t")
+                time = LocalDateTime.parse(tsValues.validTime, DateTimeFormatter.ISO_DATE_TIME),
+                weatherIcon = WeatherIcon.iconFromWeatherCode(tsValues.parameters.valueOfInt("Wsymb2")) ,
+                temperature = tsValues.parameters.valueOfFloat("t")
             )
         )
     }
 
     //daily Weather. using group by date and map
-    val dailyWeather = mutableListOf<Weather>()
-    val dailyTs = timeSeries.groupBy { it.validTime.substring(0, 10) } //creates one list per unique day
-    for (dayGroup in dailyTs) {
-        val first = dayGroup.value.first()
+    val dailyWeather = mutableListOf<Weather.Daily>()
+    val dailyTsValues = timeSeries.groupBy { it.validTime.substring(0, 10) } //creates groups by unique day
+    for (dayGroup in dailyTsValues) {
+        val firstInGroupValues = dayGroup.value.first()
         dailyWeather.add(
             Weather.Daily(
-                time = first.validTime,
-                weatherCode = first.parameters.valueOfInt("Wsymb2"),
-                maxTemperature = first.parameters.valueOfFloat("t"),
-                minTemperature = first.parameters.valueOfFloat("t")
+                time = LocalDateTime.parse(firstInGroupValues.validTime, DateTimeFormatter.ISO_DATE_TIME),
+                weatherIcon = WeatherIcon.iconFromWeatherCode(firstInGroupValues.parameters.valueOfInt("Wsymb2")) ,
+                maxTemperature = firstInGroupValues.parameters.valueOfFloat("t"),
+                minTemperature = firstInGroupValues.parameters.valueOfFloat("t")
             )
         )
     }

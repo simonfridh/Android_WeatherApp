@@ -118,7 +118,7 @@ fun CurrentWeatherBox(
     ) {
         //background image/icon
         Icon(
-            painter = painterResource(id = R.drawable.snow),
+            painter = painterResource(id = R.drawable.snowy),
             contentDescription = "WeatherIcon",
             modifier = Modifier
                 .fillMaxSize()
