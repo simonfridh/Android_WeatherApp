@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 data class CurrentWeatherEntity(
     val longitude: Double,
     val latitude: Double,
-
     val time: Long,
+
     val weatherIcon: Int,
     val temperature: Float
 )
