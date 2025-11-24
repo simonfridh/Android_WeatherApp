@@ -21,8 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.weather.ui.screens.HomeScreen
+import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
 
 @Composable
@@ -83,4 +86,16 @@ fun HourlyWeatherBox(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun PortraitPreview() {
+    HomeScreen(FakeVM())
+}
+
+@Preview(widthDp = 915, heightDp = 412)
+@Composable
+private fun LandscapePreview() {
+    HomeScreen(FakeVM())
 }

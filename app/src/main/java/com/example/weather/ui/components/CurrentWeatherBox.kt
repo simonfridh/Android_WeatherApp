@@ -21,8 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.weather.ui.screens.HomeScreen
+import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
 
 @Composable
@@ -33,7 +36,7 @@ fun CurrentWeatherBox(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f/0.45f)
+            .aspectRatio(1f/0.40f)
             .padding(8.dp,8.dp,8.dp,0.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -64,7 +67,6 @@ fun CurrentWeatherBox(
                             .aspectRatio(1f),
                         tint = Color.Unspecified
                     )
-                    Spacer(Modifier.width(20.dp))
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -80,4 +82,16 @@ fun CurrentWeatherBox(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun PortraitPreview() {
+    HomeScreen(FakeVM())
+}
+
+@Preview(widthDp = 915, heightDp = 412)
+@Composable
+private fun LandscapePreview() {
+    HomeScreen(FakeVM())
 }
