@@ -1,16 +1,16 @@
 package com.example.weather.data.local.entity
 
 import androidx.room.Entity
-import java.time.LocalDateTime
 
 @Entity(
-    tableName = "hourly",
-    primaryKeys = ["time", "longitude", "latitude"])
-
+    tableName = "current",
+    primaryKeys = ["longitude", "latitude", "time"] //todo Byt ut mot något bättre?
+)
 data class HourlyWeatherEntity(
-    val time: LocalDateTime,
     val longitude: Double,
     val latitude: Double,
+    val time: Long,
+
     val weatherIcon: Int,
     val temperature: Float,
 )

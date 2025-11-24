@@ -3,10 +3,14 @@ package com.example.weather.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "current")
+@Entity(
+    tableName = "current",
+    primaryKeys = ["longitude", "latitude"] //todo Byt ut mot något bättre?
+)
 data class CurrentWeatherEntity(
-    @PrimaryKey
-    val locationKey: String,
+    val longitude: Double,
+    val latitude: Double,
+
     val time: Long,
     val weatherIcon: Int,
     val temperature: Float
