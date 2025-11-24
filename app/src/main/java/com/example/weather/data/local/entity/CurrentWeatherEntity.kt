@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "current",
-    primaryKeys = ["longitude", "latitude"] //todo Byt ut mot något bättre?
+    primaryKeys = ["longitude", "latitude", "time"] //todo Byt ut mot något bättre?
 )
 data class CurrentWeatherEntity(
     val longitude: Double,
