@@ -34,7 +34,7 @@ class WeatherVM @Inject constructor(
     override fun getForecast() {
         viewModelScope.launch {
             _weatherState.value = _weatherState.value.copy(
-                forecast = repository.getForecast(14.333f,60.383f) //TODO: Hardcoded Longitude and Latitude
+                forecast = repository.getForecastRemote(14.333f,60.383f) //TODO: Hardcoded Longitude and Latitude
             )
             Log.d("WeatherVM", "Fetched forecast from api")
         }

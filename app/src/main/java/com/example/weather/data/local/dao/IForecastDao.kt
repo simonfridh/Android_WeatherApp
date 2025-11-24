@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.weather.data.local.entity.ForecastEntity
 
 @Dao
-interface ForecastDao {
+interface IForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert (forecast: ForecastEntity)
 

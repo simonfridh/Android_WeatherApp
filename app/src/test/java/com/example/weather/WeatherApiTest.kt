@@ -25,7 +25,7 @@ class WeatherApiTest {
         val repository: IWeatherRepository = WeatherRepositoryImpl(api)
 
         //TEST
-        val forecast = repository.getForecast(14.333f,60.383f)
+        val forecast = repository.getForecastRemote(14.333f,60.383f)
 
         //PRINT
         println("Forecast:\n----------")

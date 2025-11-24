@@ -18,6 +18,7 @@ fun ForecastResponseDto.toForecast(): Forecast {
     val latitude = geometry.coordinates.firstOrNull()?.getOrNull(1)?.toFloat() ?: 0f
 
     val currentTsValues = timeSeries.first()
+
     val currentWeather = Weather.Current(
         time = LocalDateTime.parse(currentTsValues.validTime, DateTimeFormatter.ISO_DATE_TIME),
         weatherIcon = WeatherIcon.iconFromWeatherCode(currentTsValues.parameters.valueOfInt("Wsymb2")) ,

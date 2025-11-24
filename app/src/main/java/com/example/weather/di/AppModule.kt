@@ -1,5 +1,6 @@
 package com.example.weather.di
 
+import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.remote.IWeatherApi
 import com.example.weather.data.repository.WeatherRepositoryImpl
 import com.example.weather.domain.repository.IWeatherRepository
@@ -30,7 +31,29 @@ object AppModule {
     //IWeatherRepository
     @Provides
     @Singleton
-    fun provideWeatherRepository(api: IWeatherApi): IWeatherRepository {
-        return WeatherRepositoryImpl(api)
+    fun provideWeatherRepository(
+        api: IWeatherApi,
+        dao: IForecastDao
+    ): IWeatherRepository {
+        return WeatherRepositoryImpl(api, dao)
     }
+
+    /* todo Look over
+    // DAO
+    @Provides
+    fun provideForecastDao(db: ForecastDatabase): IForecastDao{
+        return db.forecastDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext appContext: Context): ForecastDatabase{
+        return Room.databaseBuilder(
+            appContext,
+            ForecastDatabase::class.java,
+            "forecast_db"
+        ).build()
+    }
+
+     */
 }

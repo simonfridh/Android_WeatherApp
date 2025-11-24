@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.weather.data.local.converter.ForecastConverter
-import com.example.weather.data.local.dao.ForecastDao
-import com.example.weather.data.local.db.WeatherDatabase
+import com.example.weather.data.local.dao.IForecastDao
+import com.example.weather.data.local.db.ForecastDatabase
 import com.example.weather.data.local.entity.ForecastEntity
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.models.Weather
@@ -18,13 +18,13 @@ import java.time.LocalDateTime
 
 class ForecastDaoTest {
 
-    private lateinit var dao: ForecastDao
-    private lateinit var db: WeatherDatabase
+    private lateinit var dao: IForecastDao
+    private lateinit var db: ForecastDatabase
 
     @Before
     fun createDb(){
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, WeatherDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(context, ForecastDatabase::class.java).build()
         dao = db.forecastDao()
     }
 
