@@ -7,8 +7,8 @@ import androidx.room.Entity
     primaryKeys = ["longitude", "latitude", "timestamp"]
 )
 data class ForecastEntity(
-    val longitude: Double,
-    val latitude: Double,
+    val longitude: Float,
+    val latitude: Float,
     val timestamp: Long,
 
     val forecastJson: String,
