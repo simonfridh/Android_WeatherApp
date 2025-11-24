@@ -36,7 +36,7 @@ fun HourlyWeatherBox(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1/0.45f)
+            .aspectRatio(1/0.48f)
             .padding(8.dp,8.dp,8.dp,0.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
