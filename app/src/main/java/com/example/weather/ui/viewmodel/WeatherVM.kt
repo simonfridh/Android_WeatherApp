@@ -19,8 +19,7 @@ import javax.inject.Inject
 interface IWeatherViewModel {
     val weatherState: StateFlow<WeatherState>
 
-    fun setLongitudeLatitude(longitude: Float, latitude: Float)
-    fun getForecast()
+    fun getForecast(longitude: Float, latitude: Float)
 }
 
 @HiltViewModel
@@ -31,19 +30,11 @@ class WeatherVM @Inject constructor(
     override val weatherState: StateFlow<WeatherState>
         get() = _weatherState
 
-    override fun setLongitudeLatitude(longitude: Float, latitude: Float) {
-        val current = _weatherState.value
-        if(longitude == current.longitude && latitude == current.latitude) return
-        _weatherState.value = _weatherState.value.copy(longitude = longitude, latitude = latitude)
-    }
-
-    override fun getForecast() {
-        val current = _weatherState.value
-        if(current.longitude == null || current.latitude == null) return
-        Log.d("API", "API call was made with ${current.longitude}, ${current.latitude}")
+    override fun getForecast(longitude: Float, latitude: Float) {
+        Log.d("WeatherVM", "API call was made with $longitude, $latitude")
 
         viewModelScope.launch {
-            val result = repository.getForecastRemote(current.longitude,current.latitude)
+            val result = repository.getForecastRemote(longitude,latitude)
             if(result.isSuccess) {
                 Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
                 _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
@@ -58,8 +49,6 @@ class WeatherVM @Inject constructor(
 }
 
 data class WeatherState(
-    val longitude: Float? = null,
-    val latitude: Float? = null,
     val forecast: Forecast? = null
 )
 
@@ -72,8 +61,6 @@ data class WeatherState(
 class FakeVM: IWeatherViewModel {
     override val weatherState: StateFlow<WeatherState>
         get() = MutableStateFlow(WeatherState(
-            longitude = 14.333f,
-            latitude = 60.383f,
             forecast = Forecast(
                 longitude = 14.333f,
                 latitude = 60.383f,
@@ -103,6 +90,5 @@ class FakeVM: IWeatherViewModel {
             )
         )).asStateFlow()
 
-    override fun setLongitudeLatitude(longitude: Float, latitude: Float) {}
-    override fun getForecast() {}
+    override fun getForecast(longitude: Float, latitude: Float) {}
 }
