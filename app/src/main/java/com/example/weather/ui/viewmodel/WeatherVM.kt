@@ -19,7 +19,6 @@ import javax.inject.Inject
 
 interface IWeatherViewModel {
     val weatherState: StateFlow<WeatherState>
-
     fun getForecast(longitude: Float, latitude: Float)
 }
 
@@ -34,26 +33,38 @@ class WeatherVM @Inject constructor(
 
     override fun getForecast(longitude: Float, latitude: Float) {
         viewModelScope.launch {
-            val result: Result<Forecast>
-            //Get data
-            if(networkChecker.isNetworkAvailable()){
+            if(networkChecker.isNetworkAvailable()){ //Internet connection found
                 Log.d("WeatherVM", "INTERNET FOUND: API call was made with $longitude, $latitude")
-                result = repository.getForecastRemote(longitude,latitude)
-            }
-            else {
-                Log.d("WeatherVM", "NO INTERNET: fetchin cache for $longitude, $latitude")
-                result = repository.getForecastLocal(longitude,latitude)
-            }
+                val result = repository.getForecastRemote(longitude,latitude)
 
-            //Check result
-            if(result.isSuccess) {
-                Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
-                _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+                if(result.isSuccess) {
+                    Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
+                    _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+
+
+                    //TODO save result.getOrNull() to local room database
+
+
+                }
+                else if(result.isFailure){
+                    //TODO Show on screen maybe?
+                    _weatherState.value = _weatherState.value.copy(forecast = null)
+                    Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
+                }
             }
-            //TODO Just a temporary solution
-            else if(result.isFailure){
-                _weatherState.value = _weatherState.value.copy(forecast = null)
-                Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
+            else { // No internet connection found
+                Log.d("WeatherVM", "NO INTERNET: fetching cache for $longitude, $latitude")
+                val result = repository.getForecastLocal(longitude,latitude)
+
+                if(result.isSuccess) {
+                    Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
+                    _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+                }
+                else if(result.isFailure){
+                    //TODO Show on screen maybe?
+                    _weatherState.value = _weatherState.value.copy(forecast = null)
+                    Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
+                }
             }
         }
     }
