@@ -37,7 +37,7 @@ import com.example.weather.ui.viewmodel.FakeVM
 
 @Composable
 fun LongitudeLatitudeBar(
-    //TODO onSubmit: (longitude: String, latitude: String) -> Unit
+    onSubmit: (longitude: Float, latitude: Float) -> Unit
 ) {
     var longitude by remember { mutableStateOf("") }
     var latitude by remember { mutableStateOf("") }
@@ -63,7 +63,7 @@ fun LongitudeLatitudeBar(
             ) {
                 TextField(
                     value = longitude,
-                    onValueChange = {if(it.isEmpty() || it.toFloatOrNull() != null) longitude = it},
+                    onValueChange = { if(it.isEmpty() || it.toFloatOrNull() != null) longitude = it },
                     placeholder = { Text("Longitude") },
                     modifier = Modifier.weight(1f),
                     textStyle = TextStyle(fontSize = 20.sp),
@@ -90,7 +90,11 @@ fun LongitudeLatitudeBar(
                         containerColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.surfaceDim else Color.Gray,
                         contentColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
                     ),
-                    onClick = { /*TODO onSubmit(longitude, latitude)*/ }
+                    onClick = {
+                        if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null){
+                            onSubmit(longitude.toFloat(), latitude.toFloat())
+                        }
+                    }
                 ) {
                     Text("SUBMIT")
                 }

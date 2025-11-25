@@ -19,6 +19,7 @@ import javax.inject.Inject
 interface IWeatherViewModel {
     val weatherState: StateFlow<WeatherState>
 
+    fun setLongitudeLatitude(longitude: Float, latitude: Float)
     fun getForecast()
 }
 
@@ -30,11 +31,19 @@ class WeatherVM @Inject constructor(
     override val weatherState: StateFlow<WeatherState>
         get() = _weatherState
 
+    override fun setLongitudeLatitude(longitude: Float, latitude: Float) {
+        val current = _weatherState.value
+        if(longitude == current.longitude && latitude == current.latitude) return
+        _weatherState.value = _weatherState.value.copy(longitude = longitude, latitude = latitude)
+    }
 
     override fun getForecast() {
+        val current = _weatherState.value
+        if(current.longitude == null || current.latitude == null) return
+        Log.d("API", "API call was made with ${current.longitude}, ${current.latitude}")
         viewModelScope.launch {
             _weatherState.value = _weatherState.value.copy(
-                forecast = repository.getForecastRemote(14.333f,60.383f) //TODO: Hardcoded Longitude and Latitude
+                forecast = repository.getForecastRemote(current.longitude,current.latitude)
             )
             Log.d("WeatherVM", "Fetched forecast from api")
         }
@@ -42,13 +51,22 @@ class WeatherVM @Inject constructor(
 }
 
 data class WeatherState(
+    val longitude: Float? = null,
+    val latitude: Float? = null,
     val forecast: Forecast? = null
 )
 
-//Used for Previews. Filled in with values so there is something in the preview (a bit messy)
+
+
+
+
+
+// Used for Previews. Filled in with values so there is something in the preview
 class FakeVM: IWeatherViewModel {
     override val weatherState: StateFlow<WeatherState>
         get() = MutableStateFlow(WeatherState(
+            longitude = 14.333f,
+            latitude = 60.383f,
             forecast = Forecast(
                 longitude = 14.333f,
                 latitude = 60.383f,
@@ -78,5 +96,6 @@ class FakeVM: IWeatherViewModel {
             )
         )).asStateFlow()
 
+    override fun setLongitudeLatitude(longitude: Float, latitude: Float) {}
     override fun getForecast() {}
 }

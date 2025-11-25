@@ -28,7 +28,7 @@ fun HomeScreen(
     val orientation = LocalConfiguration.current.orientation
     val weatherState by vm.weatherState.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(weatherState.longitude, weatherState.latitude) {
         vm.getForecast()
     }
 
@@ -45,7 +45,7 @@ fun HomeScreen(
                 CurrentWeatherBox(weatherState)
                 HourlyWeatherBox(weatherState)
             }
-            LongitudeLatitudeBar()
+            LongitudeLatitudeBar(onSubmit = vm::setLongitudeLatitude)
         }
     }
 
@@ -79,7 +79,7 @@ fun HomeScreen(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                LongitudeLatitudeBar()
+                LongitudeLatitudeBar(onSubmit = vm::setLongitudeLatitude)
             }
         }
 
