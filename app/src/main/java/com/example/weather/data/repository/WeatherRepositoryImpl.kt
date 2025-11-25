@@ -24,9 +24,18 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getForecastLocal(lon: Float, lat: Float): Forecast? {
-        val response = dao.getLatestForecast(lon, lat) ?: return null
-        return ForecastConverter.toForecast(response.forecastJson)
+    override suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast> {
+        try {
+            val response = dao.getLatestForecast(lon, lat) ?: return Result.failure(Exception("No local forecast found"))
+            return Result.success(ForecastConverter.toForecast(response.forecastJson))
+        }
+        catch(e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override suspend fun saveForecastToLocal(forecast: Forecast) {
+        TODO("Not yet implemented")
     }
 }
 
