@@ -42,7 +42,7 @@ class WeatherVM @Inject constructor(
             //TODO Just a temporary solution
             else if(result.isFailure){
                 _weatherState.value = _weatherState.value.copy(forecast = null)
-                Log.d("WeatherVM", "FAILURE: Fetch from API failed")
+                Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
             }
         }
     }

@@ -2,7 +2,9 @@ package com.example.weather.data.mapper
 
 
 import com.example.weather.data.remote.dto.ForecastResponseDto
+import com.example.weather.data.remote.dto.Geometry
 import com.example.weather.data.remote.dto.Parameter
+import com.example.weather.data.remote.dto.TimeSeries
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.models.Weather
 import com.example.weather.domain.models.WeatherIcon
@@ -14,6 +16,12 @@ import kotlin.collections.iterator
  * TODO vi måste skriva om hela den här från scratch när vi byter API-länk
  */
 fun ForecastResponseDto.toForecast(): Forecast {
+    //check if received fields are null
+    if(approvedTime == null) throw Exception("No valid forecast received")
+    if(referenceTime == null) throw Exception("No valid forecast received")
+    if(geometry == null) throw Exception("No valid forecast received")
+    if(timeSeries == null) throw Exception("No valid forecast received")
+
     val longitude = geometry.coordinates.firstOrNull()?.getOrNull(0)?.toFloat() ?: 0f
     val latitude = geometry.coordinates.firstOrNull()?.getOrNull(1)?.toFloat() ?: 0f
 
