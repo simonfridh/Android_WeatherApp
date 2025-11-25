@@ -14,9 +14,14 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : IWeatherRepository {
 
 
-    override suspend fun getForecastRemote(lon: Float, lat: Float): Forecast {
-        val response = api.getForecast("lon/$lon/lat/$lat")
-        return response.toForecast()
+    override suspend fun getForecastRemote(lon: Float, lat: Float): Result<Forecast> {
+        try {
+            val response = api.getForecast("lon/$lon/lat/$lat")
+            return Result.success(response.toForecast())
+        }
+        catch(e: Exception) {
+            return Result.failure(e)
+        }
     }
 
     override suspend fun getForecastLocal(lon: Float, lat: Float): Forecast? {

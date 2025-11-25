@@ -41,11 +41,18 @@ class WeatherVM @Inject constructor(
         val current = _weatherState.value
         if(current.longitude == null || current.latitude == null) return
         Log.d("API", "API call was made with ${current.longitude}, ${current.latitude}")
+
         viewModelScope.launch {
-            _weatherState.value = _weatherState.value.copy(
-                forecast = repository.getForecastRemote(current.longitude,current.latitude)
-            )
-            Log.d("WeatherVM", "Fetched forecast from api")
+            val result = repository.getForecastRemote(current.longitude,current.latitude)
+            if(result.isSuccess) {
+                Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
+                _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+            }
+            //TODO Just a temporary solution
+            else if(result.isFailure){
+                _weatherState.value = _weatherState.value.copy(forecast = null)
+                Log.d("WeatherVM", "FAILURE: Fetch from API failed")
+            }
         }
     }
 }
