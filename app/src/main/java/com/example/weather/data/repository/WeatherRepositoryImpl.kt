@@ -34,8 +34,8 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveForecastToLocal(forecast: Forecast) {
-        TODO("Not yet implemented")
+    override suspend fun saveForecastToLocal(forecast: Forecast): Result<Forecast> {
+        return Result.failure(Exception("Not yet implemented")) //TODO
     }
 }
 

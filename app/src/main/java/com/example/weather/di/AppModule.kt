@@ -7,6 +7,8 @@ import com.example.weather.data.local.db.ForecastDatabase
 import com.example.weather.data.remote.IWeatherApi
 import com.example.weather.data.repository.WeatherRepositoryImpl
 import com.example.weather.domain.repository.IWeatherRepository
+import com.example.weather.domain.util.INetworkChecker
+import com.example.weather.domain.util.NetworkChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +42,14 @@ object AppModule {
         dao: IForecastDao
     ): IWeatherRepository {
         return WeatherRepositoryImpl(api, dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkChecker(
+        @ApplicationContext context: Context
+    ): INetworkChecker {
+        return NetworkChecker(context)
     }
 
     // TODO: Look over. 

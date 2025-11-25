@@ -7,6 +7,7 @@ import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.models.Weather
 import com.example.weather.domain.models.WeatherIcon
 import com.example.weather.domain.repository.IWeatherRepository
+import com.example.weather.domain.util.INetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,17 +25,27 @@ interface IWeatherViewModel {
 
 @HiltViewModel
 class WeatherVM @Inject constructor(
-    private val repository: IWeatherRepository
+    private val repository: IWeatherRepository,
+    private val networkChecker: INetworkChecker
 ): IWeatherViewModel, ViewModel() {
     private val _weatherState = MutableStateFlow(WeatherState())
     override val weatherState: StateFlow<WeatherState>
         get() = _weatherState
 
     override fun getForecast(longitude: Float, latitude: Float) {
-        Log.d("WeatherVM", "API call was made with $longitude, $latitude")
-
         viewModelScope.launch {
-            val result = repository.getForecastRemote(longitude,latitude)
+            val result: Result<Forecast>
+            //Get data
+            if(networkChecker.isNetworkAvailable()){
+                Log.d("WeatherVM", "INTERNET FOUND: API call was made with $longitude, $latitude")
+                result = repository.getForecastRemote(longitude,latitude)
+            }
+            else {
+                Log.d("WeatherVM", "NO INTERNET: fetchin cache for $longitude, $latitude")
+                result = repository.getForecastLocal(longitude,latitude)
+            }
+
+            //Check result
             if(result.isSuccess) {
                 Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
                 _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
