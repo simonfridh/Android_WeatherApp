@@ -39,7 +39,6 @@ class WeatherRepositoryImpl @Inject constructor(
         dao.insert(ForecastEntity(
             longitude = forecast.longitude,
             latitude = forecast.latitude,
-            timestamp = forecast.currentWeather.time,
             forecastJson = ForecastConverter.fromForecast(forecast))
         )
     }
