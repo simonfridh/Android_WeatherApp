@@ -9,9 +9,13 @@ import com.example.weather.domain.models.WeatherIcon
 import com.example.weather.domain.repository.IWeatherRepository
 import com.example.weather.domain.util.INetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -19,6 +23,7 @@ import javax.inject.Inject
 
 interface IWeatherViewModel {
     val weatherState: StateFlow<WeatherState>
+    val events: Flow<UiEvent>
     fun getForecast(longitude: Float, latitude: Float)
 }
 
@@ -31,39 +36,38 @@ class WeatherVM @Inject constructor(
     override val weatherState: StateFlow<WeatherState>
         get() = _weatherState
 
+    private val _events = Channel<UiEvent>(Channel.BUFFERED)
+    override val events: Flow<UiEvent>
+        get() = _events.receiveAsFlow()
+
     override fun getForecast(longitude: Float, latitude: Float) {
         viewModelScope.launch {
             if(networkChecker.isNetworkAvailable()){ //Internet connection found
-                Log.d("WeatherVM", "INTERNET FOUND: API call was made with $longitude, $latitude")
                 val result = repository.getForecastRemote(longitude,latitude)
 
                 if(result.isSuccess) {
-                    Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
                     _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
-
 
                     //TODO save result.getOrNull() to local room database
 
-
                 }
                 else if(result.isFailure){
-                    //TODO Show on screen maybe?
+                    Log.d("WeatherVM", "INTERNET FAILURE: ${result.exceptionOrNull()}")
                     _weatherState.value = _weatherState.value.copy(forecast = null)
-                    Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
+                    _events.send(UiEvent.ShowPopup("Failed to retrieve forecast."))
                 }
             }
             else { // No internet connection found
-                Log.d("WeatherVM", "NO INTERNET: fetching cache for $longitude, $latitude")
                 val result = repository.getForecastLocal(longitude,latitude)
 
                 if(result.isSuccess) {
-                    Log.d("WeatherVM", "SUCCESS: Fetched forecast from api")
                     _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+                    _events.send(UiEvent.ShowPopup("No internet connection. Showing old local data"))
                 }
                 else if(result.isFailure){
-                    //TODO Show on screen maybe?
+                    Log.d("WeatherVM", "LOCAL FAILURE: ${result.exceptionOrNull()}")
                     _weatherState.value = _weatherState.value.copy(forecast = null)
-                    Log.d("WeatherVM", "FAILURE: ${result.exceptionOrNull()}")
+                    _events.send(UiEvent.ShowPopup("No internet connection"))
                 }
             }
         }
@@ -73,6 +77,10 @@ class WeatherVM @Inject constructor(
 data class WeatherState(
     val forecast: Forecast? = null
 )
+
+sealed class UiEvent {
+    data class ShowPopup(val msg: String): UiEvent()
+}
 
 
 
@@ -111,6 +119,9 @@ class FakeVM: IWeatherViewModel {
                 )
             )
         )).asStateFlow()
+
+    override val events: Flow<UiEvent>
+        get() = emptyFlow()
 
     override fun getForecast(longitude: Float, latitude: Float) {}
 }
