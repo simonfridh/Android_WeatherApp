@@ -1,6 +1,7 @@
 package com.example.weather.ui.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -31,6 +33,7 @@ import com.example.weather.ui.components.CurrentWeatherBox
 import com.example.weather.ui.components.HourlyWeatherBox
 import com.example.weather.ui.components.LongitudeLatitudeBar
 import com.example.weather.ui.components.NoDataBox
+import com.example.weather.ui.components.PopupMessage
 import com.example.weather.ui.components.WeatherList
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.IWeatherViewModel
@@ -63,7 +66,10 @@ fun HomeScreen(
                     .padding(bottom = 56.dp),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                SnackbarHost(snackBarHostState)
+                SnackbarHost(
+                    hostState = snackBarHostState,
+                    snackbar = { data -> PopupMessage(data) }
+                )
             }
         }
     ) { padding ->

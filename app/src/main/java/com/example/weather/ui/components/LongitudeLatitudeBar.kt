@@ -76,9 +76,10 @@ fun LongitudeLatitudeBar(
             Button(
                 modifier = Modifier.height(56.dp),
                 shape = RoundedCornerShape(8.dp),
+                enabled = latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.surfaceDim else Color.Gray,
-                    contentColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
+                    containerColor =  MaterialTheme.colorScheme.primary,
+                    contentColor =  MaterialTheme.colorScheme.onPrimary
                 ),
                 onClick = {
                     if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null){
