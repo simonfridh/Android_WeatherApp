@@ -1,11 +1,13 @@
 package com.example.weather.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,18 +26,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weather.ui.screens.HomeScreen
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
 
 @Composable
 fun WeatherList(
-    modifier: Modifier = Modifier,
     weatherState: WeatherState,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     val dailyWeatherList = weatherState.forecast?.dailyWeather ?: emptyList()
-    LazyColumn (modifier = modifier) {
+
+    LazyColumn {
         //Nested content gets placed at the start of the list
         item {
             content()
@@ -45,16 +47,16 @@ fun WeatherList(
         item {
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                shape = RoundedCornerShape(8.dp),
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             ) {
+                //Text at top
                 Row(
                     Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(8.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -64,11 +66,12 @@ fun WeatherList(
                     )
                 }
 
+                //Weather data
                 for (weatherItem in dailyWeatherList) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                            .padding(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -79,9 +82,7 @@ fun WeatherList(
                                 .size(64.dp),
                             tint = Color.Unspecified
                         )
-
                         Spacer(modifier = Modifier.width(16.dp))
-
                         Column(
                             modifier = Modifier.weight(1f)
                         ) {
@@ -98,7 +99,6 @@ fun WeatherList(
                                     fontSize = 16.sp
                                 )
                             }
-
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
@@ -122,12 +122,18 @@ fun WeatherList(
 
 @Preview
 @Composable
-private fun PortraitPreview() {
-    HomeScreen(FakeVM())
+private fun WeatherListPreview() {
+    WeatherList(
+        weatherState = FakeVM().weatherState.value
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Gray),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Test Content")
+        }
+    }
 }
 
-@Preview(widthDp = 915, heightDp = 412)
-@Composable
-private fun LandscapePreview() {
-    HomeScreen(FakeVM())
-}

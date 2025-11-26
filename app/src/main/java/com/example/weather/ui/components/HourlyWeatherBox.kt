@@ -3,11 +3,10 @@ package com.example.weather.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,20 +23,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weather.ui.screens.HomeScreen
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
 
 @Composable
 fun HourlyWeatherBox(
-    weatherState: WeatherState
+    weatherState: WeatherState,
+    modifier: Modifier = Modifier
 ){
     val hourlyWeatherList = weatherState.forecast?.hourlyWeather ?: emptyList()
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1/0.48f)
-            .padding(8.dp,8.dp,8.dp,0.dp),
+        modifier = modifier
+            .height(160.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -60,9 +58,7 @@ fun HourlyWeatherBox(
             ) {
                 items(hourlyWeatherList) { weatherItem ->
                     Column(
-                        Modifier
-                            .fillMaxHeight()
-                            .padding(8.dp),
+                        Modifier.padding(8.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -74,7 +70,7 @@ fun HourlyWeatherBox(
                             painter = painterResource(id = weatherItem.weatherIcon.icon),
                             contentDescription = "WeatherIcon",
                             modifier = Modifier
-                                .size(64.dp),
+                                .weight(1f),
                             tint = Color.Unspecified
                         )
                         Text(
@@ -90,12 +86,6 @@ fun HourlyWeatherBox(
 
 @Preview
 @Composable
-private fun PortraitPreview() {
-    HomeScreen(FakeVM())
-}
-
-@Preview(widthDp = 915, heightDp = 412)
-@Composable
-private fun LandscapePreview() {
-    HomeScreen(FakeVM())
+private fun HourlyWeatherBoxPreview() {
+    HourlyWeatherBox(weatherState = FakeVM().weatherState.value)
 }
