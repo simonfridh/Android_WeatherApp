@@ -7,6 +7,7 @@ import com.example.weather.data.mapper.toForecast
 import com.example.weather.data.remote.IWeatherApi
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.repository.IWeatherRepository
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
@@ -28,7 +29,11 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast> {
         try {
             val response = dao.getLatestForecast(lon, lat) ?: return Result.failure(Exception("No local forecast found"))
-            return Result.success(ForecastConverter.toForecast(response.forecastJson))
+
+            val forecast = ForecastConverter.toForecast(response.forecastJson)
+
+            if(forecast.currentWeather.time.plusDays(1).isBefore(LocalDateTime.now())) return Result.failure(Exception("No recent forecast data saved"))
+            return Result.success(forecast)
         }
         catch(e: Exception) {
             return Result.failure(e)
