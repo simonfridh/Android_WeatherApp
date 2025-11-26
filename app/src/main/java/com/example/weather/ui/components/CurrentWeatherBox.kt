@@ -3,13 +3,12 @@ package com.example.weather.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,20 +23,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weather.ui.screens.HomeScreen
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
 
 @Composable
 fun CurrentWeatherBox(
-    weatherState: WeatherState
+    weatherState: WeatherState,
+    modifier: Modifier = Modifier
 ){
     val current = weatherState.forecast?.currentWeather
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f/0.40f)
-            .padding(8.dp,8.dp,8.dp,0.dp),
+        modifier = modifier
+            .height(160.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -86,12 +84,6 @@ fun CurrentWeatherBox(
 
 @Preview
 @Composable
-private fun PortraitPreview() {
-    HomeScreen(FakeVM())
-}
-
-@Preview(widthDp = 915, heightDp = 412)
-@Composable
-private fun LandscapePreview() {
-    HomeScreen(FakeVM())
+private fun CurrentWeatherBoxPreview() {
+    CurrentWeatherBox(weatherState = FakeVM().weatherState.value)
 }

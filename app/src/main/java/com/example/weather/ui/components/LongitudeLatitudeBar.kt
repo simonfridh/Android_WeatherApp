@@ -26,78 +26,68 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weather.ui.screens.HomeScreen
 import com.example.weather.ui.viewmodel.FakeVM
 
 @Composable
 fun LongitudeLatitudeBar(
-    onSubmit: (longitude: Float, latitude: Float) -> Unit
+    onSubmit: (longitude: Float, latitude: Float) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var longitude by remember { mutableStateOf("") }
     var latitude by remember { mutableStateOf("") }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        shape = RectangleShape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )
-    ){
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .widthIn(max = 500.dp) //Max width of this component is 500dp
+                .padding(8.dp, 8.dp,8.dp,0.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .widthIn(max = 500.dp)
-                    .padding(8.dp,8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextField(
-                    value = longitude,
-                    onValueChange = { if(it.isEmpty() || it.toFloatOrNull() != null) longitude = it },
-                    placeholder = { Text("Longitude") },
-                    modifier = Modifier.weight(1f),
-                    textStyle = TextStyle(fontSize = 20.sp),
-                    shape = RoundedCornerShape(8.dp),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                TextField(
-                    value = latitude,
-                    onValueChange = {if(it.isEmpty() || it.toFloatOrNull() != null) latitude = it},
-                    placeholder = { Text("Latitude") },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    textStyle = TextStyle(fontSize = 20.sp),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Button(
-                    modifier = Modifier.height(56.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.surfaceDim else Color.Gray,
-                        contentColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
-                    ),
-                    onClick = {
-                        if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null){
-                            onSubmit(longitude.toFloat(), latitude.toFloat())
-                        }
+            TextField(
+                value = longitude,
+                onValueChange = { if(it.isEmpty() || it.toFloatOrNull() != null) longitude = it },
+                placeholder = { Text("Longitude") },
+                modifier = Modifier.weight(1f),
+                textStyle = TextStyle(fontSize = 20.sp),
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            TextField(
+                value = latitude,
+                onValueChange = {if(it.isEmpty() || it.toFloatOrNull() != null) latitude = it},
+                placeholder = { Text("Latitude") },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(8.dp),
+                textStyle = TextStyle(fontSize = 20.sp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Button(
+                modifier = Modifier.height(56.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.surfaceDim else Color.Gray,
+                    contentColor = if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
+                ),
+                onClick = {
+                    if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null){
+                        onSubmit(longitude.toFloat(), latitude.toFloat())
                     }
-                ) {
-                    Text("SUBMIT")
                 }
+            ) {
+                Text("SUBMIT")
             }
         }
     }
@@ -105,12 +95,6 @@ fun LongitudeLatitudeBar(
 
 @Preview
 @Composable
-private fun PortraitPreview() {
-    HomeScreen(FakeVM())
-}
-
-@Preview(widthDp = 915, heightDp = 412)
-@Composable
-private fun LandscapePreview() {
-    HomeScreen(FakeVM())
+private fun LongitudeLatitudeBarPreview() {
+    LongitudeLatitudeBar(onSubmit = FakeVM()::getForecast)
 }
