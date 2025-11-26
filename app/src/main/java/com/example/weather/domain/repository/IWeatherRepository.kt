@@ -6,5 +6,5 @@ interface IWeatherRepository {
     suspend fun getForecastRemote(lon: Float, lat: Float): Result<Forecast>
     suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast>
 
-    suspend fun saveForecastToLocal(forecast: Forecast): Result<Forecast>
+    suspend fun saveForecastToLocal(forecast: Forecast)
 }

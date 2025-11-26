@@ -3,7 +3,6 @@ package com.example.weather.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.weather.data.local.converter.DateConverter
 import com.example.weather.data.local.converter.ForecastConverter
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.entity.ForecastEntity
@@ -13,7 +12,7 @@ import com.example.weather.data.local.entity.ForecastEntity
     version = 1,
     exportSchema = false
 )
-@TypeConverters(ForecastConverter::class, DateConverter::class)
+@TypeConverters(ForecastConverter::class)
 abstract class ForecastDatabase : RoomDatabase() {
     abstract fun forecastDao(): IForecastDao
 }

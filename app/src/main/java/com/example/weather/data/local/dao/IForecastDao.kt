@@ -13,8 +13,7 @@ interface IForecastDao {
 
     @Query("""
         SELECT * FROM forecast 
-        WHERE longitude = :lon AND latitude = :lat 
-        ORDER by timestamp DESC
+        WHERE longitude = :lon AND latitude = :lat
         LIMIT 1
     """)
     suspend fun getLatestForecast(lon: Float, lat: Float): ForecastEntity?

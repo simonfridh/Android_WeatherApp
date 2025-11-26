@@ -64,7 +64,6 @@ class ForecastDaoTest {
         val forecastEntity = ForecastEntity(
             longitude = forecast.longitude,
             latitude = forecast.latitude,
-            timestamp = LocalDateTime.now(),
             forecastJson = ForecastConverter.fromForecast(forecast)
         )
 

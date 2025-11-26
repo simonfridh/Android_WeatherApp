@@ -1,6 +1,5 @@
 package com.example.weather.domain.models
 
-import com.example.weather.domain.models.WeatherIcon
 import java.time.LocalDateTime
 
 sealed class Weather{
