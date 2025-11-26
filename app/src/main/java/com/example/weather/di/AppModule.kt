@@ -68,5 +68,4 @@ object AppModule {
             "forecast_db"
         ).build()
     }
-    
 }

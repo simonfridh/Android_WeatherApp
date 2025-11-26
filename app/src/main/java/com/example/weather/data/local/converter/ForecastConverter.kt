@@ -5,12 +5,14 @@ import com.example.weather.domain.models.Forecast
 import com.google.gson.Gson
 
 object ForecastConverter {
+
+    private val gson: Gson = GsonProvider().gson
     @TypeConverter
     fun fromForecast(forecast: Forecast): String {
-        return Gson().toJson(forecast)
+        return gson.toJson(forecast)
     }
     @TypeConverter
     fun toForecast(json: String): Forecast {
-        return Gson().fromJson(json, Forecast::class.java)
+        return gson.fromJson(json, Forecast::class.java)
     }
 }

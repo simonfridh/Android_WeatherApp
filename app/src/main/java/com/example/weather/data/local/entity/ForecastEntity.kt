@@ -1,6 +1,7 @@
 package com.example.weather.data.local.entity
 
 import androidx.room.Entity
+import java.time.LocalDateTime
 
 @Entity(
     tableName = "forecast",
@@ -9,7 +10,7 @@ import androidx.room.Entity
 data class ForecastEntity(
     val longitude: Float,
     val latitude: Float,
-    val timestamp: Long,
+    val timestamp: LocalDateTime,
 
     val forecastJson: String,
 )

@@ -38,10 +38,6 @@ sealed class WeatherIcon(
         icon = R.drawable.snowy
     )
 
-    object Moon: WeatherIcon(
-        icon = R.drawable.moon
-    )
-
     object Rainbow: WeatherIcon(
         icon = R.drawable.rainbow
     )
@@ -61,5 +57,21 @@ sealed class WeatherIcon(
                 else -> Rainbow
             }
         }
+
+        fun codeFromWeatherIcon(icon: WeatherIcon) : Int {
+            return when(icon) {
+                Sun -> 0
+                CloudSun -> 1
+                Cloud -> 3
+                Fog -> 45
+                Rain ->  51
+                SnowRain ->  56
+                Snow -> 71
+                RainThunder -> 95
+
+                Rainbow -> -1
+            }
+        }
+
     }
 }

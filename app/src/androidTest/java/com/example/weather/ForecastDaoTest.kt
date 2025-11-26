@@ -47,7 +47,7 @@ class ForecastDaoTest {
             hourlyWeather = listOf(
                 Weather.Hourly(
                     time = LocalDateTime.now().plusHours(1),
-                    weatherIcon = WeatherIcon.Sun,
+                    weatherIcon = WeatherIcon.Rainbow,
                     temperature = 200f
                 )
             ),
@@ -64,7 +64,7 @@ class ForecastDaoTest {
         val forecastEntity = ForecastEntity(
             longitude = forecast.longitude,
             latitude = forecast.latitude,
-            timestamp = System.currentTimeMillis(),
+            timestamp = LocalDateTime.now(),
             forecastJson = ForecastConverter.fromForecast(forecast)
         )
 
