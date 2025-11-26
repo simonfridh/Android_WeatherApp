@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             WeatherTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.primary
                 ) {
 
                     val viewModel = hiltViewModel<WeatherVM>()

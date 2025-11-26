@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -72,7 +75,7 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 12.dp),
+                    .padding(top = 16.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
                 SnackbarHost(snackBarHostState)
@@ -84,15 +87,18 @@ fun HomeScreen(
         if(orientation == Configuration.ORIENTATION_PORTRAIT) {
             Column(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
                     .padding(paddingValues = padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = 8.dp)
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    )
                 ) {
                     if(weatherState.forecast != null) {
                         WeatherList(
@@ -109,22 +115,20 @@ fun HomeScreen(
                     }
                 }
 
-                LongitudeLatitudeBar(vm::getForecast)
+                LongitudeLatitudeBar(
+                    onSubmit = vm::getForecast,
+                    modifier = Modifier.padding(8.dp,8.dp,8.dp,0.dp)
+                )
             }
         }
 
         //LANDSCAPE MODE
         if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(paddingValues = padding)
-            ) {
+            Column(modifier = Modifier.padding(paddingValues = padding)) {
                 Row(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                        .fillMaxSize(),
                     verticalAlignment = Alignment.Top
                 ) {
                     if(weatherState.forecast != null){
@@ -147,11 +151,15 @@ fun HomeScreen(
                             )
                         }
                         //RIGHT SIDE
-                        Column(
+                        Card(
                             modifier = Modifier
                                 .weight(0.60f)
                                 .fillMaxSize()
-                                .padding(8.dp,8.dp,8.dp,0.dp)
+                                .padding(8.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.background
+                            )
                         ) {
                             WeatherList(weatherState) {}
                         }
@@ -169,10 +177,11 @@ fun HomeScreen(
                         }
                     }
                 }
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    LongitudeLatitudeBar(vm::getForecast)
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    LongitudeLatitudeBar(
+                        onSubmit = vm::getForecast,
+                        modifier = Modifier.padding(8.dp,8.dp,8.dp,0.dp)
+                    )
                 }
             }
         }

@@ -47,8 +47,7 @@ fun LongitudeLatitudeBar(
     ) {
         Row(
             modifier = Modifier
-                .widthIn(max = 500.dp) //Max width of this component is 500dp
-                .padding(8.dp, 8.dp,8.dp,0.dp),
+                .widthIn(max = 500.dp), //Max width of this component is 500dp
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {

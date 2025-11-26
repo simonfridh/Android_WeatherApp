@@ -40,7 +40,6 @@ fun WeatherList(
     LazyColumn {
         //Nested content gets placed at the start of the list
         item {
-            Spacer(modifier = Modifier.height(8.dp))
             content()
         }
 
@@ -49,7 +48,7 @@ fun WeatherList(
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
@@ -117,10 +116,6 @@ fun WeatherList(
                     }
                 }
             }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
