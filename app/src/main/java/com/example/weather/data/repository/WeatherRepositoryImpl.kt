@@ -2,6 +2,7 @@ package com.example.weather.data.repository
 
 import com.example.weather.data.local.converter.ForecastConverter
 import com.example.weather.data.local.dao.IForecastDao
+import com.example.weather.data.local.entity.ForecastEntity
 import com.example.weather.data.mapper.toForecast
 import com.example.weather.data.remote.IWeatherApi
 import com.example.weather.domain.models.Forecast
@@ -34,8 +35,13 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveForecastToLocal(forecast: Forecast): Result<Forecast> {
-        return Result.failure(Exception("Not yet implemented")) //TODO
+    override suspend fun saveForecastToLocal(forecast: Forecast) {
+        dao.insert(ForecastEntity(
+            longitude = forecast.longitude,
+            latitude = forecast.latitude,
+            timestamp = forecast.currentWeather.time,
+            forecastJson = ForecastConverter.fromForecast(forecast))
+        )
     }
 }
 
