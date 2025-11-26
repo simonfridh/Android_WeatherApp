@@ -1,8 +1,10 @@
 package com.example.weather.data.remote.dto
 
 data class ForecastResponseDto(
-    val approvedTime: String?,
-    val referenceTime: String?,
-    val geometry: Geometry?,
-    val timeSeries: List<TimeSeries>?
+    val longitude: Double?,
+    val latitude: Double?,
+
+    val current: Current?,
+    val hourly: Hourly?,
+    val daily: Daily?,
 )

@@ -54,7 +54,7 @@ class WeatherVM @Inject constructor(
                 else if(result.isFailure){
                     Log.d("WeatherVM", "INTERNET FAILURE: ${result.exceptionOrNull()}")
                     _weatherState.value = _weatherState.value.copy(forecast = null)
-                    _events.send(UiEvent.ShowPopup("Failed to retrieve forecast."))
+                    _events.send(UiEvent.ShowPopup("Failed to retrieve forecast. ${result.exceptionOrNull()}"))
                 }
             }
             else { // No internet connection found

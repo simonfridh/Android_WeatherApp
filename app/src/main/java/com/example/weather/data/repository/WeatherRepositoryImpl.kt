@@ -1,9 +1,10 @@
 package com.example.weather.data.repository
 
+import android.util.Log
 import com.example.weather.data.local.converter.ForecastConverter
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.entity.ForecastEntity
-import com.example.weather.data.mapper.toForecast
+import com.example.weather.data.remote.mapper.toForecast
 import com.example.weather.data.remote.IWeatherApi
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.repository.IWeatherRepository
@@ -17,13 +18,16 @@ class WeatherRepositoryImpl @Inject constructor(
 
 
     override suspend fun getForecastRemote(lon: Float, lat: Float): Result<Forecast> {
-        try {
-            val response = api.getForecast("lon/$lon/lat/$lat")
+        val response = api.getForecast(longitude = lon, latitude = lat)
+        return Result.success(response.toForecast())
+        /*try {
+            Log.d("API_CALL", "Api call made")
+            val response = api.getForecast(longitude = lon, latitude = lat)
             return Result.success(response.toForecast())
         }
         catch(e: Exception) {
             return Result.failure(e)
-        }
+        }*/
     }
 
     override suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast> {

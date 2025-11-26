@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    private const val API_BASE_URL = "https://maceo.sth.kth.se/"
+    private const val API_BASE_URL = "https://api.open-meteo.com/"
 
     //IWeatherApi - Dependency injection
     @Provides
