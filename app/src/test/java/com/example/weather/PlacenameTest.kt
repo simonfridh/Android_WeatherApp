@@ -40,8 +40,7 @@ class PlacenameTest {
             }
 
             override suspend fun getLatestForecast(
-                lon: Float,
-                lat: Float
+                name: String
             ): ForecastEntity? {
                 return null
             }

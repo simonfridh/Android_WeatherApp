@@ -61,7 +61,7 @@ fun WeatherList(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Next ${dailyWeatherList.size} days",
+                        text = "${dailyWeatherList.size}-day forecast",
                         fontSize = 20.sp
                     )
                 }

@@ -24,7 +24,7 @@ import javax.inject.Inject
 interface IWeatherViewModel {
     val weatherState: StateFlow<WeatherState>
     val events: Flow<UiEvent>
-    fun getForecast(longitude: Float, latitude: Float)
+    fun getForecast(name: String)
 }
 
 @HiltViewModel
@@ -40,32 +40,51 @@ class WeatherVM @Inject constructor(
     override val events: Flow<UiEvent>
         get() = _events.receiveAsFlow()
 
-    override fun getForecast(longitude: Float, latitude: Float) {
+
+
+    override fun getForecast(name: String) {
         viewModelScope.launch {
             if(networkChecker.isNetworkAvailable()){ //Internet connection found
 
-                val result = repository.getForecastRemote(longitude,latitude)
+                //Get longitude and latitude from placename
+                val placenameResult = repository.getPlacenameRemote(name)
 
-                if(result.isSuccess) {
-                    val forecast = result.getOrNull()
-                    if(forecast != null) {
-                        _weatherState.value = _weatherState.value.copy(forecast = forecast)
-                        repository.saveForecastToLocal(longitude = longitude, latitude = latitude, forecast = forecast)
+                if (placenameResult.isSuccess) {
+                    val placename = placenameResult.getOrNull()
+                    if(placename != null){
+                        //Get forecast by longitude and latitude
+                        val forecastResult = repository.getForecastRemote(
+                            lon = placename.longitude,
+                            lat = placename.latitude
+                        )
+
+                        if(forecastResult.isSuccess) {
+                            val forecast = forecastResult.getOrNull()
+                            if(forecast != null) {
+                                _weatherState.value = _weatherState.value.copy(forecast = forecast)
+                                repository.saveForecastToLocal(name.lowercase(), forecast = forecast)
+                            }
+                        }
+                        else {
+                            Log.d("WeatherVM", "INTERNET FAILURE: ${forecastResult.exceptionOrNull()}")
+                            _events.send(UiEvent.ShowPopup("Failed to retrieve forecast. ${forecastResult.exceptionOrNull()}"))
+                            _weatherState.value = _weatherState.value.copy(forecast = null)
+                        }
                     }
                 }
-                else if(result.isFailure){
-                    Log.d("WeatherVM", "INTERNET FAILURE: ${result.exceptionOrNull()}")
+                else {
+                    Log.d("WeatherVM", "INTERNET FAILURE: ${placenameResult.exceptionOrNull()}")
+                    _events.send(UiEvent.ShowPopup("Failed to retrieve forecast. ${placenameResult.exceptionOrNull()}"))
                     _weatherState.value = _weatherState.value.copy(forecast = null)
-                    _events.send(UiEvent.ShowPopup("Failed to retrieve forecast. ${result.exceptionOrNull()}"))
                 }
 
             }
             else { // No internet connection found
-
-                val result = repository.getForecastLocal(longitude,latitude)
+                val result = repository.getForecastLocal(name)
 
                 if(result.isSuccess) {
-                    _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
+                    val forecast = result.getOrNull()
+                    if(forecast != null) _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
                     _events.send(UiEvent.ShowPopup("No internet connection. Showing old local data"))
                 }
                 else if(result.isFailure){
@@ -73,7 +92,6 @@ class WeatherVM @Inject constructor(
                     _weatherState.value = _weatherState.value.copy(forecast = null)
                     _events.send(UiEvent.ShowPopup("No internet connection"))
                 }
-
             }
         }
     }
@@ -128,5 +146,5 @@ class FakeVM: IWeatherViewModel {
     override val events: Flow<UiEvent>
         get() = emptyFlow()
 
-    override fun getForecast(longitude: Float, latitude: Float) {}
+    override fun getForecast(name: String) {}
 }

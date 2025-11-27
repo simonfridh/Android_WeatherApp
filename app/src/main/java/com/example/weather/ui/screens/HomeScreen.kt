@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weather.ui.components.CurrentWeatherBox
 import com.example.weather.ui.components.HourlyWeatherBox
-import com.example.weather.ui.components.LongitudeLatitudeBar
 import com.example.weather.ui.components.NoDataBox
+import com.example.weather.ui.components.PlacenameBar
 import com.example.weather.ui.components.PopupMessage
 import com.example.weather.ui.components.WeatherList
 import com.example.weather.ui.viewmodel.FakeVM
@@ -105,7 +105,7 @@ fun HomeScreen(
                     }
                 }
 
-                LongitudeLatitudeBar(
+                PlacenameBar(
                     onSubmit = vm::getForecast,
                     modifier = Modifier.padding(8.dp,8.dp,8.dp,0.dp)
                 )
@@ -168,7 +168,7 @@ fun HomeScreen(
                     }
                 }
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    LongitudeLatitudeBar(
+                    PlacenameBar(
                         onSubmit = vm::getForecast,
                         modifier = Modifier.padding(8.dp,8.dp,8.dp,0.dp)
                     )

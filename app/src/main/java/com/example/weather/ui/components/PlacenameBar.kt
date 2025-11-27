@@ -1,6 +1,5 @@
 package com.example.weather.ui.components
 
-/*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,14 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.ui.viewmodel.FakeVM
 
-
 @Composable
-fun LongitudeLatitudeBar(
-    onSubmit: (longitude: Float, latitude: Float) -> Unit,
+fun PlacenameBar(
+    onSubmit: (placename: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var longitude by remember { mutableStateOf("") }
-    var latitude by remember { mutableStateOf("") }
+    var placename by remember { mutableStateOf("") }
 
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -50,39 +47,26 @@ fun LongitudeLatitudeBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = longitude,
-                onValueChange = { if(it.isEmpty() || it.toFloatOrNull() != null) longitude = it },
-                placeholder = { Text("Longitude") },
+                value = placename,
+                onValueChange = { placename = it },
+                placeholder = { Text("Placename") },
                 modifier = Modifier.weight(1f),
                 textStyle = TextStyle(fontSize = 20.sp),
                 shape = RoundedCornerShape(8.dp),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            TextField(
-                value = latitude,
-                onValueChange = {if(it.isEmpty() || it.toFloatOrNull() != null) latitude = it},
-                placeholder = { Text("Latitude") },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                textStyle = TextStyle(fontSize = 20.sp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             )
             Spacer(modifier = Modifier.width(4.dp))
             Button(
                 modifier = Modifier.height(56.dp),
                 shape = RoundedCornerShape(8.dp),
-                enabled = latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null,
+                enabled = !placename.isEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor =  MaterialTheme.colorScheme.primary,
                     contentColor =  MaterialTheme.colorScheme.onPrimary
                 ),
                 onClick = {
-                    if(latitude.toFloatOrNull() != null && longitude.toFloatOrNull() != null){
-                        onSubmit(longitude.toFloat(), latitude.toFloat())
-                    }
+                    onSubmit(placename)
                 }
             ) {
                 Text("SUBMIT")
@@ -93,7 +77,6 @@ fun LongitudeLatitudeBar(
 
 @Preview
 @Composable
-private fun LongitudeLatitudeBarPreview() {
-    LongitudeLatitudeBar(onSubmit = FakeVM()::getForecast)
+private fun PlacenameBarPreview() {
+    PlacenameBar(onSubmit = FakeVM()::getForecast)
 }
-*/

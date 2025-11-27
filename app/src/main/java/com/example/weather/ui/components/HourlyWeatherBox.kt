@@ -48,7 +48,7 @@ fun HourlyWeatherBox(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Next 24h",
+                text = "Hourly forecast",
                 fontSize = 20.sp
             )
             LazyRow(
