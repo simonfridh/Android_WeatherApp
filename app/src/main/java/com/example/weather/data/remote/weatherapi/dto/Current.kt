@@ -1,4 +1,4 @@
-package com.example.weather.data.remote.dto
+package com.example.weather.data.remote.weatherapi.dto
 
 data class Current(
     val time: String,

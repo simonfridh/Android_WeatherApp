@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.db.ForecastDatabase
-import com.example.weather.data.remote.IWeatherApi
+import com.example.weather.data.remote.weatherapi.IWeatherApi
 import com.example.weather.data.repository.WeatherRepositoryImpl
 import com.example.weather.domain.repository.IWeatherRepository
 import com.example.weather.domain.util.INetworkChecker

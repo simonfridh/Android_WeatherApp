@@ -4,8 +4,8 @@ import android.util.Log
 import com.example.weather.data.local.converter.ForecastConverter
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.entity.ForecastEntity
-import com.example.weather.data.remote.mapper.toForecast
-import com.example.weather.data.remote.IWeatherApi
+import com.example.weather.data.remote.weatherapi.mapper.toForecast
+import com.example.weather.data.remote.weatherapi.IWeatherApi
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.repository.IWeatherRepository
 import java.time.LocalDateTime

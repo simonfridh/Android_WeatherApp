@@ -1,6 +1,6 @@
-package com.example.weather.data.remote.mapper
+package com.example.weather.data.remote.weatherapi.mapper
 
-import com.example.weather.data.remote.dto.ForecastResponseDto
+import com.example.weather.data.remote.weatherapi.dto.ForecastResponseDto
 import com.example.weather.domain.models.Forecast
 import com.example.weather.domain.models.Weather
 import com.example.weather.domain.models.WeatherIcon
