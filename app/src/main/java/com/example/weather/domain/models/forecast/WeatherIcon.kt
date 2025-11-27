@@ -6,38 +6,33 @@ import com.example.weather.R
 sealed class WeatherIcon(
     @field:DrawableRes val icon: Int
 ) {
-    object Sun: WeatherIcon(
-        icon = R.drawable.sun
+    object ClearSky: WeatherIcon(
+        icon = R.drawable.clearsky
     )
-
-    object CloudSun: WeatherIcon(
-        icon = R.drawable.cloudysun
+    object MainlyClear: WeatherIcon(
+        icon = R.drawable.mainlyclear
     )
-
-    object Cloud: WeatherIcon(
-        icon = R.drawable.cloud
+    object PartlyCloudy: WeatherIcon(
+        icon = R.drawable.partlycloudy
     )
-
+    object Cloudy: WeatherIcon(
+        icon = R.drawable.cloudy
+    )
     object Fog: WeatherIcon(
         icon = R.drawable.fog
     )
-
     object Rain: WeatherIcon(
         icon = R.drawable.rain
     )
-
-    object RainThunder: WeatherIcon(
-        icon = R.drawable.rainthunder
+    object Thunderstorm: WeatherIcon(
+        icon = R.drawable.thunderstorm
     )
-
-    object SnowRain: WeatherIcon(
-        icon = R.drawable.snowyrain
+    object FreezingRain: WeatherIcon(
+        icon = R.drawable.freezingrain
     )
-
     object Snow: WeatherIcon(
         icon = R.drawable.snowy
     )
-
     object Rainbow: WeatherIcon(
         icon = R.drawable.rainbow
     )
@@ -45,14 +40,15 @@ sealed class WeatherIcon(
     companion object {
         fun iconFromWeatherCode(code: Int) : WeatherIcon {
             return when(code) { //uses weather-codes from Open-Meteo.com
-                0 -> Sun
-                1,2 -> CloudSun
-                3 -> Cloud
+                0 -> ClearSky
+                1 -> MainlyClear
+                2 -> PartlyCloudy
+                3 -> Cloudy
                 45,48 -> Fog
                 51,53,55,61,63,65,80,81,82 -> Rain
-                56,57,66,67 -> SnowRain
+                56,57,66,67 -> FreezingRain
                 71,73,75,77,85,86 -> Snow
-                95,96,99 -> RainThunder
+                95,96,99 -> Thunderstorm
 
                 else -> Rainbow
             }
@@ -60,14 +56,15 @@ sealed class WeatherIcon(
 
         fun codeFromWeatherIcon(icon: WeatherIcon) : Int {
             return when(icon) {
-                Sun -> 0
-                CloudSun -> 1
-                Cloud -> 3
+                ClearSky -> 0
+                MainlyClear -> 1
+                PartlyCloudy -> 2
+                Cloudy -> 3
                 Fog -> 45
                 Rain ->  51
-                SnowRain ->  56
+                FreezingRain ->  56
                 Snow -> 71
-                RainThunder -> 95
+                Thunderstorm -> 95
 
                 Rainbow -> -1
             }
