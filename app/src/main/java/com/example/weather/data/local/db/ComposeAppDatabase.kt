@@ -9,7 +9,7 @@ import com.example.weather.data.local.entity.ForecastEntity
 
 @Database(
     entities = [ForecastEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(ForecastConverter::class)

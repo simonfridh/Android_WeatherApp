@@ -76,7 +76,8 @@ object AppModule {
             appContext,
             ForecastDatabase::class.java,
             "forecast_db"
-        ).build()
+        ).fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides
