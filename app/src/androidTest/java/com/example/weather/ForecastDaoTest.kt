@@ -41,7 +41,7 @@ class ForecastDaoTest {
             latitude = 103.383f,
             currentWeather = Weather.Current(
                 time = LocalDateTime.now(),
-                weatherIcon = WeatherIcon.Cloud,
+                weatherIcon = WeatherIcon.MainlyClear,
                 temperature = 100f
             ),
             hourlyWeather = listOf(
@@ -54,7 +54,7 @@ class ForecastDaoTest {
             dailyWeather = listOf(
                 Weather.Daily(
                     time = LocalDateTime.now().plusHours(10),
-                    weatherIcon = WeatherIcon.CloudSun,
+                    weatherIcon = WeatherIcon.PartlyCloudy,
                     maxTemperature = 500f,
                     minTemperature = -100f
                 )
@@ -62,14 +62,13 @@ class ForecastDaoTest {
         )
 
         val forecastEntity = ForecastEntity(
-            longitude = forecast.longitude,
-            latitude = forecast.latitude,
+            name = "Stockholm",
             forecastJson = ForecastConverter.fromForecast(forecast)
         )
 
         dao.insert(forecastEntity)
 
-        val fetched = dao.getLatestForecast(17.555f, 103.383f)
+        val fetched = dao.getLatestForecast(name = "Stockholm")
         println("$fetched")
     }
 }
