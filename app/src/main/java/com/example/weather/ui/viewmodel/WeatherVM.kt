@@ -43,21 +43,25 @@ class WeatherVM @Inject constructor(
     override fun getForecast(longitude: Float, latitude: Float) {
         viewModelScope.launch {
             if(networkChecker.isNetworkAvailable()){ //Internet connection found
+
                 val result = repository.getForecastRemote(longitude,latitude)
 
                 if(result.isSuccess) {
-                    _weatherState.value = _weatherState.value.copy(forecast = result.getOrNull())
-
-                    //TODO save result.getOrNull() to local room database
-
+                    val forecast = result.getOrNull()
+                    if(forecast != null) {
+                        _weatherState.value = _weatherState.value.copy(forecast = forecast)
+                        repository.saveForecastToLocal(longitude = longitude, latitude = latitude, forecast = forecast)
+                    }
                 }
                 else if(result.isFailure){
                     Log.d("WeatherVM", "INTERNET FAILURE: ${result.exceptionOrNull()}")
                     _weatherState.value = _weatherState.value.copy(forecast = null)
                     _events.send(UiEvent.ShowPopup("Failed to retrieve forecast. ${result.exceptionOrNull()}"))
                 }
+
             }
             else { // No internet connection found
+
                 val result = repository.getForecastLocal(longitude,latitude)
 
                 if(result.isSuccess) {
@@ -69,6 +73,7 @@ class WeatherVM @Inject constructor(
                     _weatherState.value = _weatherState.value.copy(forecast = null)
                     _events.send(UiEvent.ShowPopup("No internet connection"))
                 }
+
             }
         }
     }

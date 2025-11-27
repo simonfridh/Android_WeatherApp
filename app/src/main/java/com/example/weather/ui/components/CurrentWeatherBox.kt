@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun CurrentWeatherBox(
@@ -85,5 +86,5 @@ fun CurrentWeatherBox(
 @Preview
 @Composable
 private fun CurrentWeatherBoxPreview() {
-    CurrentWeatherBox(weatherState = FakeVM().weatherState.value)
+    CurrentWeatherBox(weatherState = FakeVM().weatherState.collectAsState().value)
 }

@@ -1,7 +1,6 @@
 package com.example.weather.ui.screens
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -47,7 +45,7 @@ fun HomeScreen(
     val weatherState by vm.weatherState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    //TODO Bara för tester
+    //Load event channel on launch
     LaunchedEffect(Unit){
         vm.events.collect { event ->
             when (event) {
@@ -59,6 +57,7 @@ fun HomeScreen(
     }
 
     Scaffold(
+        //Popup message
         snackbarHost = {
             Box(
                 modifier = Modifier

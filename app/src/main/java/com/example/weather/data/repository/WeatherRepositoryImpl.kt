@@ -18,16 +18,14 @@ class WeatherRepositoryImpl @Inject constructor(
 
 
     override suspend fun getForecastRemote(lon: Float, lat: Float): Result<Forecast> {
-        val response = api.getForecast(longitude = lon, latitude = lat)
-        return Result.success(response.toForecast())
-        /*try {
+        try {
             Log.d("API_CALL", "Api call made")
             val response = api.getForecast(longitude = lon, latitude = lat)
             return Result.success(response.toForecast())
         }
         catch(e: Exception) {
             return Result.failure(e)
-        }*/
+        }
     }
 
     override suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast> {
@@ -44,10 +42,10 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveForecastToLocal(forecast: Forecast) {
+    override suspend fun saveForecastToLocal(longitude:Float, latitude:Float, forecast: Forecast) {
         dao.insert(ForecastEntity(
-            longitude = forecast.longitude,
-            latitude = forecast.latitude,
+            longitude = longitude,
+            latitude = latitude,
             forecastJson = ForecastConverter.fromForecast(forecast))
         )
     }

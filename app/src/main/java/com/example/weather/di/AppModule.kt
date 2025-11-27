@@ -52,13 +52,6 @@ object AppModule {
         return NetworkChecker(context)
     }
 
-    // TODO: Look over. 
-    // DAO
-    @Provides
-    fun provideForecastDao(db: ForecastDatabase): IForecastDao{
-        return db.forecastDao()
-    }
-
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext appContext: Context): ForecastDatabase{
@@ -67,5 +60,11 @@ object AppModule {
             ForecastDatabase::class.java,
             "forecast_db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideForecastDao(db: ForecastDatabase): IForecastDao{
+        return db.forecastDao()
     }
 }

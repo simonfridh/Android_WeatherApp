@@ -2,7 +2,6 @@ package com.example.weather.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun HourlyWeatherBox(
@@ -87,5 +87,5 @@ fun HourlyWeatherBox(
 @Preview
 @Composable
 private fun HourlyWeatherBoxPreview() {
-    HourlyWeatherBox(weatherState = FakeVM().weatherState.value)
+    HourlyWeatherBox(weatherState = FakeVM().weatherState.collectAsState().value)
 }

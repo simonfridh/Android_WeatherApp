@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.ui.viewmodel.FakeVM
 import com.example.weather.ui.viewmodel.WeatherState
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun WeatherList(
@@ -46,7 +46,7 @@ fun WeatherList(
         //Next N-days
         item {
             Card(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
@@ -124,7 +124,7 @@ fun WeatherList(
 @Composable
 private fun WeatherListPreview() {
     WeatherList(
-        weatherState = FakeVM().weatherState.value
+        weatherState = FakeVM().weatherState.collectAsState().value
     ) {
         Box(
             modifier = Modifier
