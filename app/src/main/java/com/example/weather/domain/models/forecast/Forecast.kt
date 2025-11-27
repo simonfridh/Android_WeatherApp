@@ -1,4 +1,4 @@
-package com.example.weather.domain.models
+package com.example.weather.domain.models.forecast
 
 data class Forecast (
     val longitude: Float,

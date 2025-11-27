@@ -1,7 +1,7 @@
 package com.example.weather.data.local.converter
 
 import androidx.room.TypeConverter
-import com.example.weather.domain.models.Forecast
+import com.example.weather.domain.models.forecast.Forecast
 import com.google.gson.Gson
 
 object ForecastConverter {

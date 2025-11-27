@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface IPlacenameApi {
     @GET("search?api_key=69272de7b132e669366158yvff3c008")
-    suspend fun getForecast(
-        @Query("q") address: String,
+    suspend fun getPlacename(
+        @Query("q") name: String,
     ): List<PlacenameDto>
 }

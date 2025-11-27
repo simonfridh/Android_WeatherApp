@@ -1,9 +1,9 @@
 package com.example.weather.data.remote.weatherapi.mapper
 
 import com.example.weather.data.remote.weatherapi.dto.ForecastResponseDto
-import com.example.weather.domain.models.Forecast
-import com.example.weather.domain.models.Weather
-import com.example.weather.domain.models.WeatherIcon
+import com.example.weather.domain.models.forecast.Forecast
+import com.example.weather.domain.models.forecast.Weather
+import com.example.weather.domain.models.forecast.WeatherIcon
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

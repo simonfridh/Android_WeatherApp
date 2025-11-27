@@ -50,10 +50,15 @@ object AppModule {
     @Provides
     @Singleton
     fun provideWeatherRepository(
-        api: IWeatherApi,
+        placenameApi: IPlacenameApi,
+        weatherApi: IWeatherApi,
         dao: IForecastDao
     ): IWeatherRepository {
-        return WeatherRepositoryImpl(api, dao)
+        return WeatherRepositoryImpl(
+            weatherApi = weatherApi,
+            placenameApi = placenameApi,
+            dao = dao
+        )
     }
 
     @Provides

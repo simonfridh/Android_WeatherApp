@@ -1,6 +1,6 @@
 package com.example.weather.data.local.converter
 
-import com.example.weather.domain.models.WeatherIcon
+import com.example.weather.domain.models.forecast.WeatherIcon
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext

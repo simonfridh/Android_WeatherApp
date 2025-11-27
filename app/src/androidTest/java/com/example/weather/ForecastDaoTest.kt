@@ -7,9 +7,9 @@ import com.example.weather.data.local.converter.ForecastConverter
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.db.ForecastDatabase
 import com.example.weather.data.local.entity.ForecastEntity
-import com.example.weather.domain.models.Forecast
-import com.example.weather.domain.models.Weather
-import com.example.weather.domain.models.WeatherIcon
+import com.example.weather.domain.models.forecast.Forecast
+import com.example.weather.domain.models.forecast.Weather
+import com.example.weather.domain.models.forecast.WeatherIcon
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

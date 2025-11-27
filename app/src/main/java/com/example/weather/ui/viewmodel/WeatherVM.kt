@@ -3,9 +3,9 @@ package com.example.weather.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather.domain.models.Forecast
-import com.example.weather.domain.models.Weather
-import com.example.weather.domain.models.WeatherIcon
+import com.example.weather.domain.models.forecast.Forecast
+import com.example.weather.domain.models.forecast.Weather
+import com.example.weather.domain.models.forecast.WeatherIcon
 import com.example.weather.domain.repository.IWeatherRepository
 import com.example.weather.domain.util.INetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
