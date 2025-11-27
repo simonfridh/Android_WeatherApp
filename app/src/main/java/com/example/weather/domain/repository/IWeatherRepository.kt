@@ -5,7 +5,7 @@ import com.example.weather.domain.models.placename.Placename
 
 interface IWeatherRepository {
     suspend fun getForecastRemote(lon: Float, lat: Float): Result<Forecast>
-    suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast>
-    suspend fun saveForecastToLocal(placename:String, forecast: Forecast)
+    suspend fun getForecastLocal(name: String): Result<Forecast>
+    suspend fun saveForecastToLocal(name: String, forecast: Forecast)
     suspend fun getPlacenameRemote(name: String): Result<Placename>
 }

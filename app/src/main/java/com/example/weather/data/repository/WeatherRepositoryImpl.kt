@@ -32,9 +32,9 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getForecastLocal(lon: Float, lat: Float): Result<Forecast> {
+    override suspend fun getForecastLocal(name: String): Result<Forecast> {
         try {
-            val response = dao.getLatestForecast(lon, lat) ?: return Result.failure(Exception("No local forecast found"))
+            val response = dao.getLatestForecast(name) ?: return Result.failure(Exception("No local forecast found"))
             val forecast = ForecastConverter.toForecast(response.forecastJson)
 
             if(forecast.currentWeather.time.plusDays(1).isBefore(LocalDateTime.now())) return Result.failure(Exception("No recent forecast data saved"))
@@ -45,10 +45,9 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveForecastToLocal(longitude:Float, latitude:Float, forecast: Forecast) {
+    override suspend fun saveForecastToLocal(name: String, forecast: Forecast) {
         dao.insert(ForecastEntity(
-            longitude = longitude,
-            latitude = latitude,
+            name = name,
             forecastJson = ForecastConverter.fromForecast(forecast))
         )
     }
