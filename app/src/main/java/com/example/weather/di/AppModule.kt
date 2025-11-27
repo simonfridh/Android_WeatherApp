@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.weather.data.local.dao.IForecastDao
 import com.example.weather.data.local.db.ForecastDatabase
+import com.example.weather.data.remote.placename.IPlacenameApi
 import com.example.weather.data.remote.weatherapi.IWeatherApi
 import com.example.weather.data.repository.WeatherRepositoryImpl
 import com.example.weather.domain.repository.IWeatherRepository
@@ -21,17 +22,28 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    private const val API_BASE_URL = "https://api.open-meteo.com/"
+    private const val WEATHER_API = "https://api.open-meteo.com/"
+    private const val PLACENAME_API = "https://geocode.maps.co/"
 
     //IWeatherApi - Dependency injection
     @Provides
     @Singleton
     fun provideWeatherApi(): IWeatherApi {
         return Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
+            .baseUrl(WEATHER_API )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(IWeatherApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlacenameApi(): IPlacenameApi {
+        return Retrofit.Builder()
+            .baseUrl(PLACENAME_API )
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IPlacenameApi::class.java)
     }
 
     //IWeatherRepository
